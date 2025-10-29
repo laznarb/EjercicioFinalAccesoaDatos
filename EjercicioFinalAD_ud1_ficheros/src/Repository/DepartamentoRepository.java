@@ -9,6 +9,8 @@ public interface DepartamentoRepository {
 
     void guardar(Departamento departamento) throws IOException;
 
+    void guardarTodos(List<Departamento> departamentos) throws IOException;
+
     Departamento findByID(int id);
 
     List<Departamento> findAll() throws IOException;
