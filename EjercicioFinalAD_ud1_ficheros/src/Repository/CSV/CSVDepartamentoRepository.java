@@ -25,17 +25,6 @@ public class CSVDepartamentoRepository implements DepartamentoRepository {
     }
 
     @Override
-    public void guardarTodos(List<Departamento> departamentos) throws IOException {
-
-    }
-
-    @Override
-    public Departamento findByID(int id) {
-
-        return null;
-    }
-
-    @Override
     public List<Departamento> findAll() throws IOException {
 
         List<Departamento> departamentosEncontrados = new ArrayList<>();
