@@ -1,12 +1,22 @@
 package Repository.Binary;
 
 import Model.Departamento;
+import Repository.DepartamentoRepository;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BinaryDepartamentoRepository {
+public class BinaryDepartamentoRepository implements DepartamentoRepository {
 
-    public void escribirDepartamento(Departamento d, String nombreArchivo) throws IOException {
+    final String nombreArchivo;
+
+    public BinaryDepartamentoRepository(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    @Override
+    public void guardar(Departamento d) throws IOException {
         DataOutputStream dOutput = new DataOutputStream(new FileOutputStream(nombreArchivo, true));
         dOutput.writeInt(d.getId());
         dOutput.writeUTF(d.getNombre());
@@ -14,19 +24,24 @@ public class BinaryDepartamentoRepository {
         dOutput.close();
     }
 
-    public void leerDepartamentos(String nombreArchivo) throws IOException {
+    @Override
+    public List<Departamento> findAll() throws IOException {
+        List<Departamento> departamentosEncontrados = new ArrayList<>();
         DataInputStream dInput = new DataInputStream(new FileInputStream(nombreArchivo));
         try {
             while (true) {
                 int id = dInput.readInt();
                 String nombre = dInput.readUTF();
                 int capacidad = dInput.readInt();
-                System.out.println(id + " - " + nombre + " - " + capacidad);
+                departamentosEncontrados.add(new Departamento(id, nombre, capacidad));
+                // System.out.println(id + " - " + nombre + " - " + capacidad); // Se elimina el System.out para cumplir con el contrato de la interfaz.
             }
         } catch (EOFException e) {
             // Fin del archivo
+        } finally {
+            dInput.close();
         }
-        dInput.close();
+        return departamentosEncontrados;
     }
 }
 
